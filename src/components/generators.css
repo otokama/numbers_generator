@@ -1,0 +1,18 @@
+.generator{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.adder{
+    margin-top: 4em;
+    width: 3.5em;
+    padding: 0.1em;
+}
+
+
+.add-icon {
+    font-size: 1.5em;
+}

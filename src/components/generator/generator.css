@@ -1,0 +1,118 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    max-width: 650px;
+    background-color: rgb(245, 245, 245);
+    box-shadow: rgba(0, 0, 0, 0.14) 0em 0em 1em;
+    padding: 1em 2em 1em 2em;
+    border-radius: 0.3em;
+}
+
+.item-fade-in {
+    animation: fadeIn 0.2s;
+}
+
+.item-fade-out {
+    animation: fadeOut 0.2s;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.container .number-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    background-color: rgba(229, 229, 229, 0.587);
+    box-shadow: rgba(76, 187, 240, 0.5) 0em 0em 0.8em;
+    padding: 0.5em;
+    border-radius: 0.6em;
+}
+
+.delete-btn {
+    font-size: 1.3em;
+    align-self: flex-start;
+    margin: -0.5em 0 0 -1em;
+    transition: 0.2s;
+    color: #ABABAB;
+}
+
+.delete-btn:hover {
+    color: #F8311D;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.delete-btn:active {
+    color: #8A0C00;
+}
+
+.container .param{
+    display: flex;
+    align-items: center;
+    justify-self: flex-start;
+    width: 20em;
+    margin-left: 5em;
+}
+
+.app-title {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+}
+
+.container .form-range {
+    width: 55%;
+}
+
+.form-range::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 10px;
+    background-color: red;
+    overflow: visible;
+    cursor: pointer;
+}
+
+.form-range::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 10px;
+    background-color: red;
+    overflow: visible;
+    cursor: pointer;
+}
+
+.title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bolder;
+}
+
+.badge{
+    min-width: 3em;
+}
+
+.container .btn{
+    min-width: 10em;
+}
+
+.number-container .badge{
+    min-width: 4em;
+}
+
+.number-container .badge:hover {
+    background-color: #5F80F9 !important;
+    transition: 0.3s;
+}
