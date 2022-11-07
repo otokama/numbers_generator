@@ -5,17 +5,42 @@ import './generator.css';
 
 export default class Generator extends Component {
 
-    state = {
-      currMax: this.props.currMax,
-      len: this.props.len,
-      refresh_interval: 2,
-      numbers: [],
-      changedParam: false,
-      removing: false,
-      canGenerate: false,
-      remaining: 2
-    };
+  
+    constructor(props) {
+      super(props);
+      this.state = {
+        currMax: this.props.currMax,
+        len: this.props.len,
+        refresh_interval: 2,
+        numbers: [],
+        changedParam: false,
+        removing: false,
+        canGenerate: false,
+        timeRemaining: 2
+      };
 
+    }
+    
+    generate = () => {
+      if (!this.state.canGenerate) {
+        this.setState({numbers: this.num_generator()})
+        this.interval = setInterval(() => {
+          this.setState({numbers: this.num_generator()});
+        }, (this.state.refresh_interval+1)*1000);
+        this.countdown = setInterval(() => {
+          this.setState({timeRemaining: this.state.timeRemaining === 0 ? this.state.refresh_interval : this.state.timeRemaining - 1});
+        }, 1000);
+        this.setState({
+          canGenerate: true,
+          changedParam: true});
+      } else {
+        clearInterval(this.interval);
+        clearInterval(this.countdown);
+        this.setState({canGenerate: false, timeRemaining: this.state.refresh_interval});
+
+      }
+    }
+    
     num_generator() {
 
       if (this.state.currMax < this.state.len) {
@@ -35,6 +60,7 @@ export default class Generator extends Component {
 
     reset = () => {
       clearInterval(this.interval);
+      clearInterval(this.countdown);
       this.setState({
         currMax: this.props.currMax,
         len: this.props.len,
@@ -42,7 +68,7 @@ export default class Generator extends Component {
         numbers: [],
         canGenerate: false,
         changedParam: false,
-        remaining: 2
+        timeRemaining: 2
       });
     }
 
@@ -54,43 +80,30 @@ export default class Generator extends Component {
       }, 180);
 
     }
-    
-    generate = () => {
-      if (!this.state.canGenerate) {
-        this.setState({numbers: this.num_generator()})
-        this.interval = setInterval(() => {this.setState({numbers: this.num_generator()})}, this.state.refresh_interval*1000);
-        this.setState({
-          canGenerate: true,
-          changedParam: true});
-      } else {
-        clearInterval(this.interval);
-        this.setState({canGenerate: false});
-
-      }
-    }
 
     updateCurrMax = (val) => {
       if (val < this.state.len) {
-        this.setState({currMax: Number(val), len: Number(val), changedParam: true});
+        this.setState({currMax: val, len: val, changedParam: true});
       } else {
-        this.setState({currMax: Number(val), changedParam: true});
+        this.setState({currMax: val, changedParam: true});
       }
     }
 
     updateCurrLen = (val) => {
       if (val > this.state.currMax) {
-        this.setState({currMax: Number(val), len: Number(val), changedParam: true});
+        this.setState({currMax: val, len: val, changedParam: true});
       } else {
-        this.setState({len: Number(val), changedParam: true});
+        this.setState({len: val, changedParam: true});
       }
     }
 
     updateInterval = (val) => {
       clearInterval(this.interval);
-      console.log(val)
-      this.setState({refresh_interval: val, changedParam: true})
+      clearInterval(this.countdown);
+      this.setState({refresh_interval: val, changedParam: true, timeRemaining: val})
       if (this.state.canGenerate) {
-        this.interval = setInterval(() => {this.setState({numbers: this.num_generator()})}, val*1000);
+        this.interval = setInterval(() => {this.setState({numbers: this.num_generator()})}, (val + 1)*1000);
+        this.countdown = setInterval(() => {this.setState({timeRemaining: this.state.timeRemaining === 0 ? this.state.refresh_interval : this.state.timeRemaining - 1})}, 1000);
       }
     }
 
@@ -112,19 +125,21 @@ export default class Generator extends Component {
           <div className={this.getContainerClass()}>
             <i className="bi bi-x-circle-fill delete-btn" onClick={this.handleDelete}></i>
             <div className='param'> <div className='title'>Max:</div> <div className='badge bg-secondary m-2'>{this.state.currMax}</div> </div>
-            <input type="range" className="form-range" min="0" max="1000" value={this.state.currMax} step="1" onChange={(e) => this.updateCurrMax(e.target.value)}></input>
+            <input type="range" className="form-range" min="0" max="1000" value={this.state.currMax} step="1" onChange={(e) => this.updateCurrMax(Number(e.target.value))}></input>
 
             <div className='param'> <div className='title'>Length:</div> <div className='badge m-2 bg-primary'>{this.state.len}</div> </div>
-            <input type="range" className="form-range" min="0" max="1000" value={this.state.len} step="1" onChange={(e) => this.updateCurrLen(e.target.value)}></input>
+            <input type="range" className="form-range" min="0" max="1000" value={this.state.len} step="1" onChange={(e) => this.updateCurrLen(Number(e.target.value))}></input>
 
-            <div className='param'> <div className='title'>Refresh Interval:</div> <div className='badge m-2 bg-primary'>{this.state.refresh_interval} Seconds</div> </div>
-            <input type="range" className="form-range" min="2" max="120" value={this.state.refresh_interval} step="1" onChange={(e) => this.updateInterval(e.target.value)}></input>
+            <div className='param'> <div className='title'>Refresh Interval:</div> <div className='badge m-2 bg-primary'>{this.state.refresh_interval}s</div> </div>
+            <input type="range" className="form-range" min="2" max="120" value={this.state.refresh_interval} step="1" onChange={(e) => this.updateInterval(Number(e.target.value))}></input>
             {/* {this.state.currMax < this.state.len && 
               <div className="alert alert-danger mt-3" role="alert">
                 Cannot generate more numbers than the <strong>current max</strong>. Adjust your <strong>length</strong> to be less than the <strong>current max</strong>.
               </div> 
             } */}
-            <button type="button" className={this.genGenerateBtnClass()} onClick={ this.generate } >{this.state.canGenerate ? 'Pause' : 'Generate'}</button>
+            <button type="button" className={this.genGenerateBtnClass()} onClick={ this.generate } >
+              {this.state.canGenerate ? 'Pause (Refreshing in ' + this.state.timeRemaining + 's)' : 'Generate'}
+              </button>
             <button type="button" className='btn btn-danger m-2' onClick={this.reset} disabled={!this.state.changedParam}>Reset</button>
             
             {this.state.numbers.length > 0 &&
