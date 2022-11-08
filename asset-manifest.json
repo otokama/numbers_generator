@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/numbers_generator/static/css/main.45e5381b.css",
+    "main.js": "/numbers_generator/static/js/main.3383a6b4.js",
+    "static/js/787.f3b6963f.chunk.js": "/numbers_generator/static/js/787.f3b6963f.chunk.js",
+    "static/media/bootstrap-icons.woff?": "/numbers_generator/static/media/bootstrap-icons.e559bf06bc84fd9525e6.woff",
+    "static/media/bootstrap-icons.woff2?": "/numbers_generator/static/media/bootstrap-icons.ea98e12d2d58747f9fc5.woff2",
+    "index.html": "/numbers_generator/index.html",
+    "main.45e5381b.css.map": "/numbers_generator/static/css/main.45e5381b.css.map",
+    "main.3383a6b4.js.map": "/numbers_generator/static/js/main.3383a6b4.js.map",
+    "787.f3b6963f.chunk.js.map": "/numbers_generator/static/js/787.f3b6963f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.45e5381b.css",
+    "static/js/main.3383a6b4.js"
+  ]
+}
